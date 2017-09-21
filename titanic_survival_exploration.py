@@ -1,5 +1,5 @@
 import pandas as pd
-
+import numpy as np
 from IPython.display import display
 #import visuals as vs
 
@@ -7,22 +7,24 @@ def main():
     in_file='titanic_data.csv'
     full_data = pd.read_csv(in_file)
     display(full_data.head())
-    outcomes, data = extract_drop(full_data, 'Survived')
+    outcomes = full_data['Survived']
+    data = full_data.drop('Survived', axis=1)
     #vs.survival_stats(data,outcomes,'Parch',["Sex == 'female'", "Pclass == 3", ])
     predictions = prediction_3(data)
     print (accuracy_score(outcomes,predictions))
 
-def accuracy_score(truth, pred):
-    if len(truth) == len(pred):
-        return 'Predictions have an accuracy of {:.2f}%.'.format((truth == pred).mean()*100)
-    else:
-        return 'Number of predictions dont match outcomes'
 
 
 def extract_drop(all_data, index):
     outcomes = all_data[index]
     data = all_data.drop(index, axis=1)
     return outcomes, data
+
+def accuracy_score(truth, pred):
+    if len(truth) == len(pred):
+        return 'Predictions have an accuracy of {:.2f}%.'.format((truth == pred).mean()*100)
+    else:
+        return 'Number of predictions dont match outcomes'
 
 def prediction_0(data):
     predictions = []
